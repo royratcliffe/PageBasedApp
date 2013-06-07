@@ -8,11 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@class RRDataViewController;
+#import "RRPageModelController.h"
 
-@interface RRModelController : NSObject <UIPageViewControllerDataSource>
-
-- (RRDataViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard;
-- (NSUInteger)indexOfViewController:(RRDataViewController *)viewController;
+@interface RRModelController : RRPageModelController
 
 @end
