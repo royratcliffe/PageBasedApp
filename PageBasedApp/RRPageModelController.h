@@ -25,6 +25,12 @@
 #import <UIKit/UIKit.h>
 
 /**
+ * Models a static indexed collection of page objects; the collection is
+ * _static_ because the model controller does not accommodate dynamic page
+ * changes. You can change the page objects, including their ordering, but this
+ * requires that you reload any active page view as well as the underlying
+ * collection model.
+ *
  * The page model controller instantiates view controllers for an indexed
  * collection of abstract page objects. The controller accesses the view
  * controller implementation's page object property using key-value coding.
