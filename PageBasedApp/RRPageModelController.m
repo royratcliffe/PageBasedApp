@@ -127,24 +127,38 @@ NSString *const kRRPageModelDefaultPageObjectKey = @"pageObject";
 	[self.pageObjects replaceObjectsAtIndexes:indexes withObjects:objects];
 }
 
-#pragma mark - Page View Controller Data Source
+// The page index does not wrap in either direction: forwards or
+// backwards. Handle indexing in a way that will allow sub-classes to override
+// it if required.
 
-// The page index does not wrap in either direction: forwards or backwards.
+- (NSUInteger)indexBeforeIndex:(NSUInteger)index
+{
+	if (index == NSNotFound || index == 0) return NSNotFound;
+	return index - 1;
+}
+
+- (NSUInteger)indexAfterIndex:(NSUInteger)index
+{
+	if (index == NSNotFound || index + 1 == [self countOfPageObjects]) return NSNotFound;
+	return index + 1;
+}
+
+#pragma mark - Page View Controller Data Source
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController
 	  viewControllerBeforeViewController:(UIViewController *)viewController
 {
 	NSUInteger index = [self indexOfViewController:viewController];
-	if (index == NSNotFound || index == 0) return nil;
-	return [self viewControllerAtIndex:index - 1 storyboard:viewController.storyboard];
+	if ((index = [self indexBeforeIndex:index]) == NSNotFound) return nil;
+	return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController
 	   viewControllerAfterViewController:(UIViewController *)viewController
 {
 	NSUInteger index = [self indexOfViewController:viewController];
-	if (index == NSNotFound || index + 1 == [self countOfPageObjects]) return nil;
-	return [self viewControllerAtIndex:index + 1 storyboard:viewController.storyboard];
+	if ((index = [self indexAfterIndex:index]) == NSNotFound) return nil;
+	return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
 }
 
 @end

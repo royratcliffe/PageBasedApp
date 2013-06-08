@@ -50,6 +50,9 @@
  */
 - (UIViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard;
 
+- (NSUInteger)indexBeforeIndex:(NSUInteger)index;
+- (NSUInteger)indexAfterIndex:(NSUInteger)index;
+
 //----------------------------------------------------------------- Page Objects
 
 - (NSUInteger)countOfPageObjects;
