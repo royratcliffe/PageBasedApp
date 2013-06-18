@@ -94,16 +94,14 @@ NSString *const kRRPageModelDefaultPageObjectKey = @"pageObject";
 
 #pragma mark - Page View Controller Data Source
 
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController
-	  viewControllerBeforeViewController:(UIViewController *)viewController
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
 	NSUInteger index = [self indexOfViewController:viewController];
 	if ((index = [self indexBeforeIndex:index]) == NSNotFound) return nil;
 	return [self viewControllerAtIndex:index storyboard:viewController.storyboard];
 }
 
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController
-	   viewControllerAfterViewController:(UIViewController *)viewController
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
 {
 	NSUInteger index = [self indexOfViewController:viewController];
 	if ((index = [self indexAfterIndex:index]) == NSNotFound) return nil;
