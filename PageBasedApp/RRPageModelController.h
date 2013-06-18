@@ -61,17 +61,18 @@
 
 //----------------------------------------------------------------- Page Objects
 
-- (NSUInteger)countOfPageObjects;
-- (id)objectInPageObjectsAtIndex:(NSUInteger)index;
-- (NSArray *)pageObjectsAtIndexes:(NSIndexSet *)indexes;
-- (void)getPageObjects:(__unsafe_unretained id [])buffer range:(NSRange)range;
+@property(readonly, strong, nonatomic) id pageObjectsController;
+@property(readonly, copy, nonatomic) NSString *pageObjectsKeyPath;
 
-- (void)insertObject:(id)anObject inPageObjectsAtIndex:(NSUInteger)index;
-- (void)insertPageObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectFromPageObjectsAtIndex:(NSUInteger)index;
-- (void)removePageObjectsAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInPageObjectsAtIndex:(NSUInteger)index withObject:(id)anObject;
-- (void)replacePageObjectsAtIndexes:(NSIndexSet *)indexes withPageObjects:(NSArray *)objects;
+- (void)observePageObjectsForKeyPath:(NSString *)keyPath ofController:(id)controller;
+
+/**
+ * Answers the observed ordered set of page objects. The data source observes
+ * and accesses an ordered set using key-value observation and key-value
+ * coding. Typically, you implement the ordered set as mutable but the data
+ * source only accesses the set immutably.
+ */
+@property(readonly, nonatomic) NSOrderedSet *pageObjects;
 
 @end
 

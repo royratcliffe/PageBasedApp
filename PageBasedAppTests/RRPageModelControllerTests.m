@@ -25,15 +25,32 @@
 #import "RRPageModelControllerTests.h"
 #import "RRPageModelController.h"
 
+@interface RRPageModelControllerTests()
+
+@property(strong, nonatomic) NSMutableOrderedSet *pageObjects;
+
+@end
+
 @implementation RRPageModelControllerTests
+
+- (void)setUp
+{
+	self.pageObjects = [NSMutableOrderedSet orderedSet];
+}
+
+- (void)tearDown
+{
+	self.pageObjects = nil;
+}
 
 - (void)testKVC
 {
 	RRPageModelController *controller = [RRPageModelController new];
-	STAssertEquals([controller countOfPageObjects], (NSUInteger)0, nil);
+	[controller observePageObjectsForKeyPath:@"pageObjects" ofController:self];
+	STAssertEquals([controller.pageObjects count], (NSUInteger)0, nil);
 	
-	[controller insertPageObjects:@[@1, @2, @3] atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)]];
-	STAssertEquals([controller countOfPageObjects], (NSUInteger)3, nil);
+	[self.pageObjects insertObjects:@[@1, @2, @3] atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)]];
+	STAssertEquals([controller.pageObjects count], (NSUInteger)3, nil);
 }
 
 @end

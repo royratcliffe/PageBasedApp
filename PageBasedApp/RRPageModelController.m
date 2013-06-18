@@ -28,27 +28,14 @@ NSString *const kRRPageModelDefaultPageObjectKey = @"pageObject";
 
 @interface RRPageModelController()
 
-/**
- * A mutable array implements the indexed page objects. The page object
- * interface implements indexed mutable array accessors.
- */
-@property(strong, nonatomic) NSMutableArray *pageObjects;
+@property(strong, nonatomic) id pageObjectsController;
+@property(copy, nonatomic) NSString *pageObjectsKeyPath;
 
 - (NSString *)pageObjectKey;
 
 @end
 
 @implementation RRPageModelController
-
-- (id)init
-{
-	self = [super init];
-	if (self)
-	{
-		self.pageObjects = [NSMutableArray array];
-	}
-	return self;
-}
 
 - (NSString *)pageObjectKey
 {
@@ -63,68 +50,30 @@ NSString *const kRRPageModelDefaultPageObjectKey = @"pageObject";
 
 - (UIViewController *)viewControllerAtIndex:(NSUInteger)index storyboard:(UIStoryboard *)storyboard
 {
-	NSUInteger count = [self countOfPageObjects];
+	NSUInteger count = [self.pageObjects count];
 	if (count == 0 || index >= count) return nil;
 	UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:self.viewControllerIdentifier];
-	id pageObject = self.pageObjects[index];
+	id pageObject = [self.pageObjects objectAtIndex:index];
 	[viewController setValue:pageObject forKey:[self pageObjectKey]];
 	return viewController;
 }
 
 #pragma mark - Page Objects
 
-// indexed accessors
-
-- (NSUInteger)countOfPageObjects
+- (void)observePageObjectsForKeyPath:(NSString *)keyPath ofController:(id)controller
 {
-	return [self.pageObjects count];
+	[self.pageObjectsController removeObserver:self forKeyPath:self.pageObjectsKeyPath];
+	[self.pageObjectsController = controller addObserver:self forKeyPath:self.pageObjectsKeyPath = keyPath options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
 }
 
-- (id)objectInPageObjectsAtIndex:(NSUInteger)index
+- (void)dealloc
 {
-	return [self.pageObjects objectAtIndex:index];
+	[self observePageObjectsForKeyPath:nil ofController:nil];
 }
 
-- (NSArray *)pageObjectsAtIndexes:(NSIndexSet *)indexes
+- (NSOrderedSet *)pageObjects
 {
-	return [self.pageObjects objectsAtIndexes:indexes];
-}
-
-- (void)getPageObjects:(__unsafe_unretained id [])objects range:(NSRange)range
-{
-	[self.pageObjects getObjects:objects range:range];
-}
-
-// mutable indexed accessors
-
-- (void)insertObject:(id)anObject inPageObjectsAtIndex:(NSUInteger)index
-{
-	[self.pageObjects insertObject:anObject atIndex:index];
-}
-
-- (void)insertPageObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes
-{
-	[self.pageObjects insertObjects:objects atIndexes:indexes];
-}
-
-- (void)removeObjectFromPageObjectsAtIndex:(NSUInteger)index
-{
-	[self.pageObjects removeObjectAtIndex:index];
-}
-
-- (void)removePageObjectsAtIndexes:(NSIndexSet *)indexes
-{
-	[self.pageObjects removeObjectsAtIndexes:indexes];
-}
-
-- (void)replaceObjectInPageObjectsAtIndex:(NSUInteger)index withObject:(id)anObject
-{
-	[self.pageObjects replaceObjectAtIndex:index withObject:anObject];
-}
-
-- (void)replacePageObjectsAtIndexes:(NSIndexSet *)indexes withPageObjects:(NSArray *)objects
-{
-	[self.pageObjects replaceObjectsAtIndexes:indexes withObjects:objects];
+	return [self.pageObjectsController valueForKeyPath:self.pageObjectsKeyPath];
 }
 
 // The page index does not wrap in either direction: forwards or
@@ -139,7 +88,7 @@ NSString *const kRRPageModelDefaultPageObjectKey = @"pageObject";
 
 - (NSUInteger)indexAfterIndex:(NSUInteger)index
 {
-	if (index == NSNotFound || index + 1 == [self countOfPageObjects]) return NSNotFound;
+	if (index == NSNotFound || index + 1 == [self.pageObjects count]) return NSNotFound;
 	return index + 1;
 }
 
