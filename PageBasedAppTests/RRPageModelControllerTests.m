@@ -49,7 +49,13 @@
 	[controller observePageObjectsForKeyPath:@"pageObjects" ofController:self];
 	STAssertEquals([controller.pageObjects count], (NSUInteger)0, nil);
 	
-	[self.pageObjects insertObjects:@[@1, @2, @3] atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)]];
+	// Note that if you alter `self.pageObjects` rather than `[self
+	// mutableOrderedSetValueForKey:@"pageObjects"]` then the page model
+	// controller cannot observe the change. Ordered sets are not directly
+	// observable. Always access their contents using key-value coding
+	// accessors.
+	NSMutableOrderedSet *pageObjects = [self mutableOrderedSetValueForKey:@"pageObjects"];
+	[pageObjects insertObjects:@[@1, @2, @3] atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)]];
 	STAssertEquals([controller.pageObjects count], (NSUInteger)3, nil);
 }
 
