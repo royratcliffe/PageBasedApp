@@ -48,7 +48,7 @@
 	RRPageModelController *controller = [RRPageModelController new];
 	[controller observePageObjectsForKeyPath:@"pageObjects" ofController:self];
 	STAssertEquals([controller.pageObjects count], (NSUInteger)0, nil);
-	
+
 	// Note that if you alter `self.pageObjects` rather than `[self
 	// mutableOrderedSetValueForKey:@"pageObjects"]` then the page model
 	// controller cannot observe the change. Ordered sets are not directly
