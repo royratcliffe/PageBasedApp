@@ -77,6 +77,10 @@
 
 //----------------------------------------------------------------- Page Objects
 
+// This page source retains a strong reference to the page objects'
+// controller. The controller _owns_ the key-path to the ordered set. It acts as
+// the order set's controller so far as concerns this page-data source.
+
 @property(readonly, strong, nonatomic) id pageObjectsController;
 @property(readonly, copy, nonatomic) NSString *pageObjectsKeyPath;
 
