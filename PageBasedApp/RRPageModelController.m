@@ -92,6 +92,17 @@ NSString *const kRRPageModelDefaultPageObjectKey = @"pageObject";
 	return index + 1;
 }
 
+- (NSIndexSet *)indicesOfViewControllers
+{
+	NSMutableIndexSet *indices = [NSMutableIndexSet indexSet];
+	for (UIViewController *viewController in self.pageViewController.viewControllers)
+	{
+		NSUInteger index = [self indexOfViewController:viewController];
+		[indices addIndex:index];
+	}
+	return [indices copy];
+}
+
 - (NSArray *)viewControllersForPortraitInterfaceOrientation
 {
 	// Expression `self.pageViewController.viewControllers[0]` gives the

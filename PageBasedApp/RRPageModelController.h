@@ -61,6 +61,13 @@
 - (NSUInteger)indexBeforeIndex:(NSUInteger)index;
 - (NSUInteger)indexAfterIndex:(NSUInteger)index;
 
+/**
+ * Answers the indices of the page controller's view controllers. The index set
+ * resulting will contain `NSNotFound` if one or more of the view controllers
+ * have a page object that does not belong to the observed page objects.
+ */
+- (NSIndexSet *)indicesOfViewControllers;
+
 - (NSArray *)viewControllersForPortraitInterfaceOrientation;
 
 /**
