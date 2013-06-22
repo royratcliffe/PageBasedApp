@@ -113,8 +113,11 @@ NSString *const kRRPageModelDefaultPageObjectKey = @"pageObject";
 
 - (NSArray *)viewControllersForLandscapeInterfaceOrientation
 {
-	NSArray *viewControllers;
-	UIViewController *viewController = self.pageViewController.viewControllers[0];
+	// Handle empty view controllers. Answer `nil` for the view controllers when
+	// the page view controller contains an empty view controller array.
+	NSArray *viewControllers = self.pageViewController.viewControllers;
+	if ([viewControllers count] == 0) return nil;
+	UIViewController *viewController = viewControllers[0];
 	NSUInteger indexOfViewController = [self indexOfViewController:viewController];
 	if (indexOfViewController % 2 == 0)
 		viewControllers = @[viewController, [self pageViewController:self.pageViewController viewControllerAfterViewController:viewController]];
