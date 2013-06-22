@@ -37,6 +37,8 @@
  */
 @interface RRPageModelController : NSObject<UIPageViewControllerDataSource>
 
+@property(weak, nonatomic) IBOutlet UIPageViewController *pageViewController;
+
 @property(copy, nonatomic) NSString *viewControllerIdentifier;
 @property(copy, nonatomic) NSString *viewControllerPageObjectKey;
 
@@ -58,6 +60,20 @@
 
 - (NSUInteger)indexBeforeIndex:(NSUInteger)index;
 - (NSUInteger)indexAfterIndex:(NSUInteger)index;
+
+- (NSArray *)viewControllersForPortraitInterfaceOrientation;
+
+/**
+ * Answers an array of view controllers. Uses the page view controller outlet to
+ * construct the view controllers for landscape orientation. If the current
+ * left-most view controller is an even-indexed controller, answers the current
+ * left-most view controller followed by the controller after it; but if
+ * odd-indexed, answers the previous view controller followed by the current
+ * left-most view controller. When odd-indexed at left-most, the new view
+ * controllers place the previous one first, making the new first controller an
+ * even-indexed controller. Hence the pages always show even-odd.
+ */
+- (NSArray *)viewControllersForLandscapeInterfaceOrientation;
 
 //----------------------------------------------------------------- Page Objects
 

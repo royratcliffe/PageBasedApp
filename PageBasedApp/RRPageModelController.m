@@ -92,6 +92,26 @@ NSString *const kRRPageModelDefaultPageObjectKey = @"pageObject";
 	return index + 1;
 }
 
+- (NSArray *)viewControllersForPortraitInterfaceOrientation
+{
+	// Expression `self.pageViewController.viewControllers[0]` gives the
+	// 'current' view controller, or the left-most view controller. This assumes
+	// more than zero view controllers.
+	return @[self.pageViewController.viewControllers[0]];
+}
+
+- (NSArray *)viewControllersForLandscapeInterfaceOrientation
+{
+	NSArray *viewControllers;
+	UIViewController *viewController = self.pageViewController.viewControllers[0];
+	NSUInteger indexOfViewController = [self indexOfViewController:viewController];
+	if (indexOfViewController % 2 == 0)
+		viewControllers = @[viewController, [self pageViewController:self.pageViewController viewControllerAfterViewController:viewController]];
+	else
+		viewControllers = @[[self pageViewController:self.pageViewController viewControllerBeforeViewController:viewController], viewController];
+	return viewControllers;
+}
+
 #pragma mark - Page View Controller Data Source
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
