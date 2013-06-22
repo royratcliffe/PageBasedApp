@@ -34,6 +34,11 @@
  * The page model controller instantiates view controllers for an indexed
  * collection of abstract page objects. The controller accesses the view
  * controller implementation's page object property using key-value coding.
+ *
+ * The implementation presumes that you initially set up the page view
+ * controller with at least the first sub-controller. From that initial
+ * controller, it derives the story board and instantiates other new
+ * sub-controllers based on the view controller identifier.
  */
 @interface RRPageModelController : NSObject<UIPageViewControllerDataSource>
 
